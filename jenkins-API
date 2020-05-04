@@ -1,0 +1,26 @@
+
+Step 1:
+Here, localhost will be the JENKINS server
+How to Generate CRUMB:
+
+wget -q --auth-no-challenge --user aanatha --password Monday@123 --output-document 'http://localhost:8080/jenkins/crumblssuer/api/xml?path=concat(//crumbRequestField,":",//crumb)'
+
+The above wget command will result in below CRUMB TOKEN -----> Jenkins-Crumb:7889aB07asdads989
+
+Step 2:
+
+Jenkins API:
+
+curk -k -u aanatha:Monday@123 -X POST http://localhost:8080/jenkins/job/work1/build?token=117a8afasdfasdfasdfadsf -H "Jenkins-Crumb:7889aB07asdads989" --data-urlencode json='{"parameter":[{"name":"mlti", "value":"lppbdsv123"}]}'
+
+
+Step 3:
+
+Put in Bash script:
+
+
+for i in $(cat hosts)
+do
+# Note , near $I variable name ==> double quotes then single quotes then double quotes then VARIABLE NAME - $i, then double quotes the single quotes then double quotes
+curl -k -u aanatha:Monday@123 -X POST https://localhost:8080/jenkins/job/work1/build?token=117a8afasdfasdfasdfadsf -H  "Jenkins-Crumb:7889aB07asdads989" --data-urlencode json ='{parameter": [{"name":"mlti","value": "'"$i"'"}]}'
+done
